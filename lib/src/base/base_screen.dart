@@ -1,15 +1,45 @@
 import 'package:flutter/material.dart';
 
-class BaseScreen extends StatelessWidget {
+import '../home/home_tab.dart';
+
+class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});
+
+  @override
+  State<BaseScreen> createState() => _BaseScreenState();
+}
+
+class _BaseScreenState extends State<BaseScreen> {
+  int currentIndex = 0;
+  final pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.green,
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController,
+        children: [
+          const HomeTab(),
+          Container(
+            color: Colors.yellow,
+          ),
+          Container(
+            color: Colors.blue,
+          ),
+          Container(
+            color: Colors.purple,
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+            pageController.jumpToPage(index);
+          });
+        },
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.green,
         selectedItemColor: Colors.white,
@@ -18,19 +48,19 @@ class BaseScreen extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
             label: 'Home',
-            ),
-            BottomNavigationBarItem(
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart_checkout_outlined),
             label: 'Carrinho',
-            ),
-            BottomNavigationBarItem(
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: 'Pedidos',
-            ),
-            BottomNavigationBarItem(
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
             label: 'Perfil',
-            ),
+          ),
         ],
       ),
     );
